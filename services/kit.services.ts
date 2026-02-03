@@ -1,3 +1,4 @@
+import { IDevice } from "../interface/kit.model.interface";
 import { Kit } from "../models/kit.model";
 
 const getStatus = async (name: string): Promise<{ statusCode: number, success: boolean, message: string, status?: string}> => {
@@ -9,7 +10,8 @@ const getStatus = async (name: string): Promise<{ statusCode: number, success: b
         if (!deviceDoc || !deviceDoc.devices || deviceDoc.devices.length === 0) {
           return { statusCode: 404, success: false, message: "Device not found!" };
         }
-        return { statusCode: 200, success: true, message: "Successfully send the status!", status: deviceDoc.devices[0].status };
+        const device: IDevice = deviceDoc.devices[0] as IDevice;
+        return { statusCode: 200, success: true, message: "Successfully send the status!", status: device.status };
     } catch (err: any) {
         console.error(`Got Error in the getStatus function, reason: ${err.message}`);
         return { statusCode: 500, success: false, message: "Internal Server Error!" };
@@ -19,8 +21,9 @@ const getStatus = async (name: string): Promise<{ statusCode: number, success: b
 
 const updateStatus = async (details: { name: string, status: string }): Promise<{ statusCode: number, success: boolean, message: string }> => {
     try {
+        const id: string = process.env.KIT_DB_ID as string;
         await Kit.findOneAndUpdate(
-            { id: process.env.KIT_DB_ID, "devices.name": details.name },
+            { id: id, "devices.name": details.name },
             { $set: { "devices.$.status": details.status} },
             { new: true}
         );
@@ -34,8 +37,9 @@ const updateStatus = async (details: { name: string, status: string }): Promise<
 
 const createDevice = async (deviceName: string): Promise<{ statusCode: number, success: boolean, message: string }> => {
     try {
+        const id: string = process.env.KIT_DB_ID as string;
         await Kit.findOneAndUpdate(
-            { id: process.env.KIT_DB_ID },
+            { id: id },
             {
                 $push: {
                     devices: {
@@ -57,8 +61,9 @@ const createDevice = async (deviceName: string): Promise<{ statusCode: number, s
 
 const updateControl = async (details: { name: string, control: string }): Promise<{ statusCode: number, success: boolean, message: string }> => {
     try {
+        const id: string = process.env.KIT_DB_ID as string;
         await Kit.findOneAndUpdate(
-            { id: process.env.KIT_DB_ID, "devices.name": details.name },
+            { id: id, "devices.name": details.name },
             { 
                 $set: {
                     "devices.$.control": details.control
@@ -83,7 +88,8 @@ const getControl = async (name: string): Promise<{ statusCode: number, success: 
         if (!deviceDoc || !deviceDoc.devices || deviceDoc.devices.length === 0) {
           return { statusCode: 404, success: false, message: "Device not found!" };
         }
-        return { statusCode: 200, success: true, message: "Successfully sent the control!", control: deviceDoc.devices[0].control };
+        const device: IDevice = deviceDoc.devices[0] as IDevice;
+        return { statusCode: 200, success: true, message: "Successfully sent the control!", control: device.control };
     } catch (err: any) {
         console.error(`Got Error in the getControl function, reason: ${err.message}`);
         return { statusCode: 500, success: false, message: "Internal Server Error!" };

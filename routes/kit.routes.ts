@@ -3,6 +3,10 @@ import { createDevice, getControl, getStatus, updateControl, updateStatus } from
 
 const router = express.Router();
 
+router.get('/test', async (req: Request, res: Response) => {
+    return res.status(200).json({ message: "working" });
+});
+
 router.get('/get-status', async (req: Request, res: Response) => {
     const name: string = req.query.name as string;
     const result: { statusCode: number, success: boolean, message: string, status?: string } = await getStatus(name);
