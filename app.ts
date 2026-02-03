@@ -3,7 +3,7 @@ import cors from 'cors';
 import connectDB from './config/db.config';
 
 // ---------------- Routes ---------------------
-// import authRoutes from './routes/auth.routes';
+import kitRoutes from './routes/kit.routes';
 
 const app = express();
 
@@ -47,7 +47,7 @@ app.use((err: Error, req: Request, res: Response) => {
 });
 
 // ---------------- Actual Routes --------------------
-// app.use("/auth", authRoutes);
+app.use("/kit", kitRoutes);
 
 export default app;
 

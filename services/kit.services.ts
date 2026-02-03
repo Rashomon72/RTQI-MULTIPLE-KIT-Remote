@@ -9,7 +9,7 @@ const getStatus = async (name: string): Promise<{ statusCode: number, success: b
         if (!deviceDoc || !deviceDoc.devices || deviceDoc.devices.length === 0) {
           return { statusCode: 404, success: false, message: "Device not found!" };
         }
-        return { statusCode: 200, success: true, message: "Successfully send the status!", status:deviceDoc.devices[0].status};
+        return { statusCode: 200, success: true, message: "Successfully send the status!", status: deviceDoc.devices[0].status };
     } catch (err: any) {
         console.error(`Got Error in the getStatus function, reason: ${err.message}`);
         return { statusCode: 500, success: false, message: "Internal Server Error!" };
@@ -44,7 +44,8 @@ const createDevice = async (deviceName: string): Promise<{ statusCode: number, s
                         control: "stop"
                     }
                 }
-            }
+            },
+            { new: true }
         );
         return { statusCode: 201, success: true, message: "Successfully created a new Device!" };
     } catch (err: any) {
