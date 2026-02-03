@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { createDevice, getControl, getStatus, updateControl, updateStatus } from "../services/kit.services";
+import { createDevice, deleteDevice, getControl, getStatus, updateControl, updateStatus } from "../services/kit.services";
 
 const router = express.Router();
 
@@ -35,6 +35,12 @@ router.get('/get-control', async (req: Request, res: Response) => {
     const name: string = req.query.name as string;
     const result: { statusCode: number, success: boolean, message: string, control?: string } = await getControl(name);
     return res.status(result.statusCode).json({ success: result.success, message: result.message, ...(result.control && {control: result.control})});
+});
+
+router.delete('/delete-device', async (req: Request, res: Response) => {
+    const name: string = req.query.name as string;
+    const result: { statusCode: number, success: boolean, message: string } = await deleteDevice(name);
+    return res.status(result.statusCode).json({ success: result.success, message: result.message });
 });
 
 export default router;
