@@ -38,4 +38,22 @@ const createDevice = async (deviceName: string): Promise<{ statusCode: number, s
 };
 
 
-export { getStatus, createDevice };
+const updateControl = async (details: { name: string, control: string }): Promise<{ statusCode: number, success: boolean, message: string }> => {
+    try {
+        await Kit.findOneAndUpdate(
+            { id: process.env.KIT_DB_ID, "devices.name": details.name },
+            { 
+                $set: {
+                    "devices.$.control": details.control
+                }
+            },
+            { new: true }
+        );
+        return { statusCode: 200, success: true, message: "Successfully updated the Control variable!" };
+    } catch (err: any) {
+        console.error(`Got Error in the updateControl function, reason: ${err.message}`);
+        return { statusCode: 500, success: false, message: "Internal Server Error!" };
+    }
+};
+
+export { getStatus, createDevice, updateControl };
