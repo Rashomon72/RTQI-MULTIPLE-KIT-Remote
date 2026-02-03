@@ -16,6 +16,22 @@ const getStatus = async (name: string): Promise<{ statusCode: number, success: b
     }
 };
 
+
+const updateStatus = async (details: { name: string, status: string }): Promise<{ statusCode: number, success: boolean, message: string }> => {
+    try {
+        await Kit.findOneAndUpdate(
+            { id: process.env.KIT_DB_ID, "devices.name": details.name },
+            { $set: { "devices.$.status": details.status} },
+            { new: true}
+        );
+        return { statusCode: 200, success: true, message: "Successfully udpated the status!" };
+    } catch (err: any) {
+        console.error(`Got Error in the updateStatus function, reason: ${err.message}`);
+        return { statusCode: 500, success: false, message: "Internal Server Error!" };
+    }
+};
+
+
 const createDevice = async (deviceName: string): Promise<{ statusCode: number, success: boolean, message: string }> => {
     try {
         await Kit.findOneAndUpdate(
@@ -73,4 +89,4 @@ const getControl = async (name: string): Promise<{ statusCode: number, success: 
     }
 };
 
-export { getStatus, createDevice, updateControl, getControl };
+export { getStatus, createDevice, updateControl, getControl, updateStatus };

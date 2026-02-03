@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { createDevice, getControl, getStatus, updateControl } from "../services/kit.services";
+import { createDevice, getControl, getStatus, updateControl, updateStatus } from "../services/kit.services";
 
 const router = express.Router();
 
@@ -7,6 +7,12 @@ router.get('/get-status', async (req: Request, res: Response) => {
     const name: string = req.query.name as string;
     const result: { statusCode: number, success: boolean, message: string, status?: string } = await getStatus(name);
     return res.status(result.statusCode).json({ success: result.success, message: result.message, ...(result.status && {status: result.status})});
+});
+
+router.post('/update-status', async (req: Request, res: Response) => {
+    const details: { name: string, status: string } = req.body;
+    const result: { statusCode: number, success: boolean, message: string } = await updateStatus(details);
+    return res.status(result.statusCode).json({ success: result.success, message: result.message });
 });
 
 router.post('/create-device', async (req: Request, res: Response) => {
