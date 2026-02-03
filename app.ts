@@ -41,7 +41,7 @@ app.get('/ping', async (req: Request, res: Response) => {
 });
 
 // ---------------- Error Handler --------------------
-app.use((err: Error, req: Request, res: Response) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error(`Error Handler: ${err.message}`);
     res.status(500).json({ message: "Internal Server Error"});
 });
