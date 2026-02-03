@@ -3,7 +3,7 @@ import { Document } from "mongoose";
 
 // ------- Device INTERFACE ------------
 export interface IDevice {
-    id: number;
+    name: string;
     status: string;
     control: string;
 }

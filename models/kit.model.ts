@@ -10,7 +10,7 @@ const KitSchema = new Schema<IKit>({
         unique: true
     },
     devices: [{
-        id: { type: Number, required: true },
+        name: { type: String, required: true },
         status: { type: String },
         control: { type: String }
     }],
