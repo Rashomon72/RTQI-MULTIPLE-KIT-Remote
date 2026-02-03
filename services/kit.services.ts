@@ -7,7 +7,7 @@ const getStatus = async (name: string): Promise<{ statusCode: number, success: b
             { devices: { $elemMatch: {name}}},
         );
         if (!deviceDoc || !deviceDoc.devices || deviceDoc.devices.length === 0) {
-          return { statusCode: 404, success: false, message: "deviceDoc not found!" };
+          return { statusCode: 404, success: false, message: "Device not found!" };
         }
         return { statusCode: 200, success: true, message: "Successfully send the status!", status:deviceDoc.devices[0].status};
     } catch (err: any) {
@@ -56,4 +56,21 @@ const updateControl = async (details: { name: string, control: string }): Promis
     }
 };
 
-export { getStatus, createDevice, updateControl };
+
+const getControl = async (name: string): Promise<{ statusCode: number, success: boolean, message: string, control?: string }> => {
+    try {
+        const deviceDoc = await Kit.findOne(
+            { "devices.name": name },
+            { devices: { $elemMatch: {name}}},
+        );
+        if (!deviceDoc || !deviceDoc.devices || deviceDoc.devices.length === 0) {
+          return { statusCode: 404, success: false, message: "Device not found!" };
+        }
+        return { statusCode: 200, success: true, message: "Successfully sent the control!", control: deviceDoc.devices[0].control };
+    } catch (err: any) {
+        console.error(`Got Error in the getControl function, reason: ${err.message}`);
+        return { statusCode: 500, success: false, message: "Internal Server Error!" };
+    }
+};
+
+export { getStatus, createDevice, updateControl, getControl };
