@@ -1,5 +1,5 @@
-// import mongoose from "mongoose";
+import mongoose from "mongoose";
 
-// afterAll(async () => {
-//   await mongoose.connection.close();
-// });
+afterAll(async () => {
+  await mongoose.connection.close();
+});
