@@ -7,6 +7,6 @@ describe("API Tests", () => {
     it("Server Started", async () => {
         const res = await request(app).get('/');
         expect(res.statusCode).toBe(200);
-        expect(res.body).toEqual({ message: "Server Started!"});
+        expect(res.body).toEqual({ message: "Server is Working!"});
     });
 });
