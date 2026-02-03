@@ -1,8 +1,8 @@
-import enableLogging from 'logsave-hub';
-enableLogging({
-    override: true,
-    outDir: './logs'
-});
+// import enableLogging from 'logsave-hub';
+// enableLogging({
+//     override: true,
+//     outDir: './logs'
+// });
 import dotenv from 'dotenv';
 dotenv.config();
 import app from './app';
