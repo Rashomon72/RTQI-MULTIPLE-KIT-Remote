@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { getStatus } from "../services/kit.services";
+import { createDevice, getStatus } from "../services/kit.services";
 
 const router = express.Router();
 
@@ -9,5 +9,10 @@ router.get('/get-status', async (req: Request, res: Response) => {
     return res.status(result.statusCode).json({ success: result.success, message: result.message, ...(result.status && {status: result.status})});
 });
 
-export default router;
+router.post('/create-device', async (req: Request, res: Response) => {
+    const details: { name: string } = req.body;
+    const result: { statusCode: number, success: boolean, message: string } = await createDevice(details.name);
+    return res.status(result.statusCode).json({ success: result.success, message: result.message });
+});
 
+export default router;

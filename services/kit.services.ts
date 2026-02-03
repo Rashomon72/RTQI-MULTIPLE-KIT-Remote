@@ -1,5 +1,4 @@
 import { Kit } from "../models/kit.model";
-import { IDevice, IKit } from "../interface/kit.model.interface";
 
 const getStatus = async (name: string): Promise<{ statusCode: number, success: boolean, message: string, status?: string}> => {
     try {
@@ -17,4 +16,26 @@ const getStatus = async (name: string): Promise<{ statusCode: number, success: b
     }
 };
 
-export { getStatus };
+const createDevice = async (deviceName: string): Promise<{ statusCode: number, success: boolean, message: string }> => {
+    try {
+        await Kit.findOneAndUpdate(
+            { id: process.env.KIT_DB_ID },
+            {
+                $push: {
+                    devices: {
+                        name: deviceName,
+                        status: "offline",
+                        control: "stop"
+                    }
+                }
+            }
+        );
+        return { statusCode: 201, success: true, message: "Successfully created a new Device!" };
+    } catch (err: any) {
+        console.error(`Got Error in the createDevice function, reason: ${err.message}`);
+        return { statusCode: 500, success: false, message: "Internal Server Error!" };
+    }
+};
+
+
+export { getStatus, createDevice };
