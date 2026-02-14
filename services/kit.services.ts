@@ -118,7 +118,7 @@ const getDevices = async (): Promise<{ statusCode: number, success: boolean, mes
     try {
         const id: string = process.env.KIT_DB_ID as string;
         const result = await Kit.findOne({ id: id });
-        if (!result.devices) {
+        if (!result && !result.devices) {
           return { statusCode: 404, success: false, message: "Devices not found" };
         }
         return { statusCode: 200, success: true, message: "Successfully sent the device list!", devices: result.devices };
