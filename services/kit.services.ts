@@ -114,4 +114,18 @@ const deleteDevice = async (name: string): Promise<{ statusCode: number, success
     }
 };
 
-export { getStatus, createDevice, updateControl, getControl, updateStatus, deleteDevice };
+const getDevices = async (): Promise<{ statusCode: number, success: boolean, message: string, devices?: IDevice[] }> => {
+    try {
+        const id: string = process.env.KIT_DB_ID as string;
+        const result = await Kit.findOne({ id: id });
+        if (!result.devices) {
+          return { statusCode: 404, success: false, message: "Devices not found" };
+        }
+        return { statusCode: 200, success: true, message: "Successfully sent the device list!", devices: result.devices };
+    } catch (err: any) {
+        console.error(`Got Error in the getDevices function, reason: ${err.message}`);
+        return { statusCode: 500, success: false, message: "Internal Server Issue!" };
+    }
+};
+
+export { getStatus, createDevice, updateControl, getControl, updateStatus, deleteDevice, getDevices };

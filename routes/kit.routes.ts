@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
-import { createDevice, deleteDevice, getControl, getStatus, updateControl, updateStatus } from "../services/kit.services";
+import { createDevice, deleteDevice, getControl, getDevices, getStatus, updateControl, updateStatus } from "../services/kit.services";
+import { IDevice } from "../interface/kit.model.interface";
 
 const router = express.Router();
 
@@ -41,6 +42,11 @@ router.delete('/delete-device', async (req: Request, res: Response) => {
     const name: string = req.query.name as string;
     const result: { statusCode: number, success: boolean, message: string } = await deleteDevice(name);
     return res.status(result.statusCode).json({ success: result.success, message: result.message });
+});
+
+router.get('/get-devices', async (req: Request, res: Response) => {
+    const result: { statusCode: number, success: boolean, message: string, devices?: IDevice[] } = await getDevices();
+    return res.status(result.statusCode).json({ success: result.success, message: result.message, ...(result.devices && {devices: result.devices})});
 });
 
 export default router;
