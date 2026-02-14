@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --passWithNoTests",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node server.js",
     "dev": "nodemon",
     "clean": "rimraf dist .tsbuildinfo"
   },
